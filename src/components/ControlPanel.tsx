@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Card } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Loader2, HelpCircle } from "lucide-react";
 
 interface ControlPanelProps {
   onRunCrew: (params: ResearchParams) => void;
@@ -122,9 +123,19 @@ export const ControlPanel = ({ onRunCrew, isRunning }: ControlPanelProps) => {
           
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label htmlFor="similarity" className="text-sm font-medium">
-                Minimum Tanimoto Similarity
-              </Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Label htmlFor="similarity" className="text-sm font-medium flex items-center gap-1.5 cursor-help">
+                      Minimum Tanimoto Similarity
+                      <HelpCircle className="h-3.5 w-3.5 text-muted-foreground" />
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Controla qué tan similar debe ser la molécula optimizada a la original. Un valor más alto (cercano a 1.0) mantiene la estructura más similar, mientras que valores más bajos permiten mayor innovación estructural.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <span className="text-sm font-mono text-muted-foreground">
                 {similarity[0].toFixed(2)}
               </span>
