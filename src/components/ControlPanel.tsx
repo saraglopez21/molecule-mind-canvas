@@ -133,7 +133,7 @@ export const ControlPanel = ({ onRunCrew, onDemoMode, isRunning }: ControlPanelP
                     </Label>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>Controla qué tan similar debe ser la molécula optimizada a la original. Un valor más alto (cercano a 1.0) mantiene la estructura más similar, mientras que valores más bajos permiten mayor innovación estructural.</p>
+                    <p>Controls how similar the optimized molecule should be to the original. A higher value (close to 1.0) maintains more structural similarity, while lower values allow greater structural innovation.</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -211,7 +211,7 @@ export const ControlPanel = ({ onRunCrew, onDemoMode, isRunning }: ControlPanelP
             className="w-full"
             size="lg"
           >
-            Ver Modo Demo
+            View Demo Mode
           </Button>
         </div>
       </form>

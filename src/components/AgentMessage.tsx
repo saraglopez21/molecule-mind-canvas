@@ -20,29 +20,33 @@ const agentColors: Record<string, string> = {
 };
 
 const chemicalTerms: Record<string, string> = {
-  LogP: "Coeficiente de partición octanol-agua. Mide la lipofilia de la molécula (qué tan soluble es en grasa vs agua). Valores típicos: -2 a 6.",
-  logP: "Coeficiente de partición octanol-agua. Mide la lipofilia de la molécula (qué tan soluble es en grasa vs agua). Valores típicos: -2 a 6.",
-  TPSA: "Área de superficie polar topológica. Predice la permeabilidad de la membrana celular. Valores bajos (<140 Ų) favorecen la absorción oral.",
-  QED: "Quantitative Estimate of Drug-likeness. Métrica que evalúa qué tan similar es la molécula a un fármaco típico. Escala: 0 (no drug-like) a 1 (muy drug-like).",
+  LogP: "Octanol-water partition coefficient. Measures molecular lipophilicity (how soluble it is in fat vs water). Typical values: -2 to 6.",
+  logP: "Octanol-water partition coefficient. Measures molecular lipophilicity (how soluble it is in fat vs water). Typical values: -2 to 6.",
+  TPSA: "Topological Polar Surface Area. Predicts cell membrane permeability. Low values (<140 Ų) favor oral absorption.",
+  QED: "Quantitative Estimate of Drug-likeness. Metric evaluating how similar the molecule is to a typical drug. Scale: 0 (not drug-like) to 1 (very drug-like).",
   "SA Score":
-    "Synthetic Accessibility Score. Estima qué tan fácil es sintetizar la molécula en el laboratorio. Escala: 1 (muy fácil) a 10 (muy difícil).",
+    "Synthetic Accessibility Score. Estimates how easy it is to synthesize the molecule in the laboratory. Scale: 1 (very easy) to 10 (very difficult).",
   Tanimoto:
-    "Medida de similitud molecular basada en fingerprints químicos. Compara estructuras químicas. Escala: 0 (completamente diferente) a 1 (idéntica).",
+    "Molecular similarity measure based on chemical fingerprints. Compares chemical structures. Scale: 0 (completely different) to 1 (identical).",
   Lipinski:
-    "Regla de los 5 de Lipinski. Criterios para predecir biodisponibilidad oral: MW<500, LogP<5, HBD<5, HBA<10.",
+    "Lipinski's Rule of 5. Criteria to predict oral bioavailability: MW<500, LogP<5, HBD<5, HBA<10.",
   bioavailability:
-    "Biodisponibilidad. Fracción del fármaco que alcanza la circulación sistémica sin cambios. Crítico para fármacos orales.",
+    "Bioavailability. Fraction of the drug that reaches systemic circulation unchanged. Critical for oral drugs.",
   permeability:
-    "Permeabilidad. Capacidad de una molécula para cruzar membranas biológicas. Esencial para la absorción y distribución.",
+    "Permeability. Ability of a molecule to cross biological membranes. Essential for absorption and distribution.",
   solubility:
-    "Solubilidad. Capacidad de disolverse en un solvente. Afecta la absorción y biodisponibilidad del fármaco.",
+    "Solubility. Ability to dissolve in a solvent. Affects drug absorption and bioavailability.",
   toxicity:
-    "Toxicidad. Potencial de una sustancia para causar daño a organismos vivos. Se evalúa en múltiples niveles.",
+    "Toxicity. Potential of a substance to cause harm to living organisms. Evaluated at multiple levels.",
   affinity:
-    "Afinidad. Fuerza de unión entre una molécula (ligando) y su objetivo biológico (receptor). Medida por Kd o IC50.",
+    "Affinity. Binding strength between a molecule (ligand) and its biological target (receptor). Measured by Kd or IC50.",
   selectivity:
-    "Selectividad. Preferencia de una molécula por un objetivo específico sobre otros. Reduce efectos secundarios.",
-  ADME: "Absorción, Distribución, Metabolismo y Excreción. Propiedades farmacocinéticas que determinan el comportamiento del fármaco en el cuerpo.",
+    "Selectivity. Preference of a molecule for a specific target over others. Reduces side effects.",
+  ADME: "Absorption, Distribution, Metabolism, and Excretion. Pharmacokinetic properties that determine drug behavior in the body.",
+  MW: "Molecular Weight. Total mass of the molecule. Important for drug absorption and distribution.",
+  CNS: "Central Nervous System. Ability to penetrate the blood-brain barrier.",
+  HBD: "Hydrogen Bond Donors. Number of hydrogen atoms bound to electronegative atoms that can donate hydrogen bonds.",
+  HBA: "Hydrogen Bond Acceptors. Number of electronegative atoms that can accept hydrogen bonds.",
 };
 
 interface PropertyRange {
@@ -83,7 +87,7 @@ const StatusIndicator = ({ status, value }: { status: RangeStatus; value: string
       badgeVariant: "default" as const,
       badgeClassName:
         "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-green-300 dark:border-green-800",
-      label: "Óptimo",
+      label: "Optimal",
     },
     acceptable: {
       icon: AlertTriangle,
@@ -91,14 +95,14 @@ const StatusIndicator = ({ status, value }: { status: RangeStatus; value: string
       badgeVariant: "secondary" as const,
       badgeClassName:
         "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-300 dark:border-yellow-800",
-      label: "Aceptable",
+      label: "Acceptable",
     },
     problematic: {
       icon: XCircle,
       className: "text-red-600 dark:text-red-400",
       badgeVariant: "destructive" as const,
       badgeClassName: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border-red-300 dark:border-red-800",
-      label: "Problemático",
+      label: "Problematic",
     },
   };
 
