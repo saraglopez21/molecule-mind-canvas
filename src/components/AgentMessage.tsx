@@ -20,20 +20,29 @@ const agentColors: Record<string, string> = {
 };
 
 const chemicalTerms: Record<string, string> = {
-  "LogP": "Coeficiente de partición octanol-agua. Mide la lipofilia de la molécula (qué tan soluble es en grasa vs agua). Valores típicos: -2 a 6.",
-  "logP": "Coeficiente de partición octanol-agua. Mide la lipofilia de la molécula (qué tan soluble es en grasa vs agua). Valores típicos: -2 a 6.",
-  "TPSA": "Área de superficie polar topológica. Predice la permeabilidad de la membrana celular. Valores bajos (<140 Ų) favorecen la absorción oral.",
-  "QED": "Quantitative Estimate of Drug-likeness. Métrica que evalúa qué tan similar es la molécula a un fármaco típico. Escala: 0 (no drug-like) a 1 (muy drug-like).",
-  "SA Score": "Synthetic Accessibility Score. Estima qué tan fácil es sintetizar la molécula en el laboratorio. Escala: 1 (muy fácil) a 10 (muy difícil).",
-  "Tanimoto": "Medida de similitud molecular basada en fingerprints químicos. Compara estructuras químicas. Escala: 0 (completamente diferente) a 1 (idéntica).",
-  "Lipinski": "Regla de los 5 de Lipinski. Criterios para predecir biodisponibilidad oral: MW<500, LogP<5, HBD<5, HBA<10.",
-  "bioavailability": "Biodisponibilidad. Fracción del fármaco que alcanza la circulación sistémica sin cambios. Crítico para fármacos orales.",
-  "permeability": "Permeabilidad. Capacidad de una molécula para cruzar membranas biológicas. Esencial para la absorción y distribución.",
-  "solubility": "Solubilidad. Capacidad de disolverse en un solvente. Afecta la absorción y biodisponibilidad del fármaco.",
-  "toxicity": "Toxicidad. Potencial de una sustancia para causar daño a organismos vivos. Se evalúa en múltiples niveles.",
-  "affinity": "Afinidad. Fuerza de unión entre una molécula (ligando) y su objetivo biológico (receptor). Medida por Kd o IC50.",
-  "selectivity": "Selectividad. Preferencia de una molécula por un objetivo específico sobre otros. Reduce efectos secundarios.",
-  "ADME": "Absorción, Distribución, Metabolismo y Excreción. Propiedades farmacocinéticas que determinan el comportamiento del fármaco en el cuerpo.",
+  LogP: "Coeficiente de partición octanol-agua. Mide la lipofilia de la molécula (qué tan soluble es en grasa vs agua). Valores típicos: -2 a 6.",
+  logP: "Coeficiente de partición octanol-agua. Mide la lipofilia de la molécula (qué tan soluble es en grasa vs agua). Valores típicos: -2 a 6.",
+  TPSA: "Área de superficie polar topológica. Predice la permeabilidad de la membrana celular. Valores bajos (<140 Ų) favorecen la absorción oral.",
+  QED: "Quantitative Estimate of Drug-likeness. Métrica que evalúa qué tan similar es la molécula a un fármaco típico. Escala: 0 (no drug-like) a 1 (muy drug-like).",
+  "SA Score":
+    "Synthetic Accessibility Score. Estima qué tan fácil es sintetizar la molécula en el laboratorio. Escala: 1 (muy fácil) a 10 (muy difícil).",
+  Tanimoto:
+    "Medida de similitud molecular basada en fingerprints químicos. Compara estructuras químicas. Escala: 0 (completamente diferente) a 1 (idéntica).",
+  Lipinski:
+    "Regla de los 5 de Lipinski. Criterios para predecir biodisponibilidad oral: MW<500, LogP<5, HBD<5, HBA<10.",
+  bioavailability:
+    "Biodisponibilidad. Fracción del fármaco que alcanza la circulación sistémica sin cambios. Crítico para fármacos orales.",
+  permeability:
+    "Permeabilidad. Capacidad de una molécula para cruzar membranas biológicas. Esencial para la absorción y distribución.",
+  solubility:
+    "Solubilidad. Capacidad de disolverse en un solvente. Afecta la absorción y biodisponibilidad del fármaco.",
+  toxicity:
+    "Toxicidad. Potencial de una sustancia para causar daño a organismos vivos. Se evalúa en múltiples niveles.",
+  affinity:
+    "Afinidad. Fuerza de unión entre una molécula (ligando) y su objetivo biológico (receptor). Medida por Kd o IC50.",
+  selectivity:
+    "Selectividad. Preferencia de una molécula por un objetivo específico sobre otros. Reduce efectos secundarios.",
+  ADME: "Absorción, Distribución, Metabolismo y Excreción. Propiedades farmacocinéticas que determinan el comportamiento del fármaco en el cuerpo.",
 };
 
 interface PropertyRange {
@@ -43,13 +52,13 @@ interface PropertyRange {
 }
 
 const propertyRanges: Record<string, PropertyRange> = {
-  "LogP": { optimal: [0, 3], acceptable: [-0.4, 5.6] },
-  "logP": { optimal: [0, 3], acceptable: [-0.4, 5.6] },
-  "TPSA": { optimal: [20, 90], acceptable: [0, 140], reverse: true },
-  "QED": { optimal: [0.67, 1], acceptable: [0.49, 1] },
+  LogP: { optimal: [0, 3], acceptable: [-0.4, 5.6] },
+  logP: { optimal: [0, 3], acceptable: [-0.4, 5.6] },
+  TPSA: { optimal: [20, 90], acceptable: [0, 140], reverse: true },
+  QED: { optimal: [0.67, 1], acceptable: [0.49, 1] },
   "SA Score": { optimal: [1, 3], acceptable: [1, 6], reverse: true },
-  "Tanimoto": { optimal: [0.7, 0.95], acceptable: [0.5, 1] },
-  "MW": { optimal: [160, 450], acceptable: [150, 500], reverse: true },
+  Tanimoto: { optimal: [0.7, 0.95], acceptable: [0.5, 1] },
+  MW: { optimal: [160, 450], acceptable: [150, 500], reverse: true },
 };
 
 type RangeStatus = "optimal" | "acceptable" | "problematic";
@@ -72,23 +81,25 @@ const StatusIndicator = ({ status, value }: { status: RangeStatus; value: string
       icon: CheckCircle2,
       className: "text-green-600 dark:text-green-400",
       badgeVariant: "default" as const,
-      badgeClassName: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-green-300 dark:border-green-800",
-      label: "Óptimo"
+      badgeClassName:
+        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border-green-300 dark:border-green-800",
+      label: "Óptimo",
     },
     acceptable: {
       icon: AlertTriangle,
       className: "text-yellow-600 dark:text-yellow-400",
       badgeVariant: "secondary" as const,
-      badgeClassName: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-300 dark:border-yellow-800",
-      label: "Aceptable"
+      badgeClassName:
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border-yellow-300 dark:border-yellow-800",
+      label: "Aceptable",
     },
     problematic: {
       icon: XCircle,
       className: "text-red-600 dark:text-red-400",
       badgeVariant: "destructive" as const,
       badgeClassName: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border-red-300 dark:border-red-800",
-      label: "Problemático"
-    }
+      label: "Problemático",
+    },
   };
 
   const config = configs[status];
@@ -98,7 +109,10 @@ const StatusIndicator = ({ status, value }: { status: RangeStatus; value: string
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Badge variant={config.badgeVariant} className={`${config.badgeClassName} ml-1.5 gap-1 text-xs font-semibold`}>
+          <Badge
+            variant={config.badgeVariant}
+            className={`${config.badgeClassName} ml-1.5 gap-1 text-xs font-semibold`}
+          >
             <Icon className="h-3 w-3" />
             {value}
           </Badge>
@@ -119,7 +133,7 @@ const extractSmilesStrings = (text: string): string[] => {
   ];
 
   const found: string[] = [];
-  
+
   for (const pattern of smilesPatterns) {
     const matches = text.matchAll(pattern);
     for (const match of matches) {
@@ -137,110 +151,97 @@ const renderMessageWithTooltips = (text: string) => {
   const parts: JSX.Element[] = [];
   let lastIndex = 0;
   let key = 0;
-  
+
   // Pattern to match property: value pairs (e.g., "LogP: 2.3", "TPSA = 45.2")
   const propertyValuePattern = new RegExp(
-    `\\b(${Object.keys(propertyRanges).join('|')})\\s*[:=]?\\s*(-?\\d+\\.?\\d*)`,
-    'gi'
+    `\\b(${Object.keys(propertyRanges).join("|")})\\s*[:=]?\\s*(-?\\d+\\.?\\d*)`,
+    "gi",
   );
-  
+
   // Create a regex pattern from all chemical terms
-  const termPattern = new RegExp(
-    `\\b(${Object.keys(chemicalTerms).join('|')})\\b`,
-    'gi'
-  );
-  
+  const termPattern = new RegExp(`\\b(${Object.keys(chemicalTerms).join("|")})\\b`, "gi");
+
   // First pass: find all matches (both property-value pairs and terms)
-  const allMatches: Array<{ index: number; length: number; type: 'property-value' | 'term'; match: RegExpExecArray }> = [];
-  
+  const allMatches: Array<{ index: number; length: number; type: "property-value" | "term"; match: RegExpExecArray }> =
+    [];
+
   let match;
   while ((match = propertyValuePattern.exec(text)) !== null) {
-    allMatches.push({ index: match.index, length: match[0].length, type: 'property-value', match });
+    allMatches.push({ index: match.index, length: match[0].length, type: "property-value", match });
   }
-  
+
   while ((match = termPattern.exec(text)) !== null) {
     // Check if this term is part of a property-value pair
     const isPartOfPropertyValue = allMatches.some(
-      m => m.type === 'property-value' && match.index >= m.index && match.index < m.index + m.length
+      (m) => m.type === "property-value" && match.index >= m.index && match.index < m.index + m.length,
     );
     if (!isPartOfPropertyValue) {
-      allMatches.push({ index: match.index, length: match[0].length, type: 'term', match });
+      allMatches.push({ index: match.index, length: match[0].length, type: "term", match });
     }
   }
-  
+
   // Sort matches by index
   allMatches.sort((a, b) => a.index - b.index);
-  
+
   // Second pass: render matches
   for (const { index, length, type, match } of allMatches) {
     // Add text before the match
     if (index > lastIndex) {
-      parts.push(
-        <span key={`text-${key++}`}>
-          {text.substring(lastIndex, index)}
-        </span>
-      );
+      parts.push(<span key={`text-${key++}`}>{text.substring(lastIndex, index)}</span>);
     }
-    
-    if (type === 'property-value') {
+
+    if (type === "property-value") {
       const property = match[1];
       const value = parseFloat(match[2]);
       const status = getValueStatus(property, value);
-      
+
       parts.push(
         <span key={`prop-${key++}`} className="inline-flex items-center">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="underline decoration-dotted decoration-primary/50 cursor-help">
-                  {property}
-                </span>
+                <span className="underline decoration-dotted decoration-primary/50 cursor-help">{property}</span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p className="text-xs">{chemicalTerms[property] || "Propiedad química"}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          {text[index + property.length] === ':' || text[index + property.length] === '=' ? 
-            text[index + property.length] : ''}{' '}
+          {text[index + property.length] === ":" || text[index + property.length] === "="
+            ? text[index + property.length]
+            : ""}{" "}
           <StatusIndicator status={status} value={match[2]} />
-        </span>
+        </span>,
       );
     } else {
       // Add term with tooltip
       const term = match[0];
-      const termKey = Object.keys(chemicalTerms).find(
-        k => k.toLowerCase() === term.toLowerCase()
-      );
-      
+      const termKey = Object.keys(chemicalTerms).find((k) => k.toLowerCase() === term.toLowerCase());
+
       if (termKey) {
         parts.push(
           <TooltipProvider key={`tooltip-${key++}`}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="underline decoration-dotted decoration-primary/50 cursor-help">
-                  {term}
-                </span>
+                <span className="underline decoration-dotted decoration-primary/50 cursor-help">{term}</span>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p className="text-xs">{chemicalTerms[termKey]}</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider>,
         );
       }
     }
-    
+
     lastIndex = index + length;
   }
-  
+
   // Add remaining text
   if (lastIndex < text.length) {
-    parts.push(
-      <span key={`text-${key++}`}>{text.substring(lastIndex)}</span>
-    );
+    parts.push(<span key={`text-${key++}`}>{text.substring(lastIndex)}</span>);
   }
-  
+
   return parts.length > 0 ? parts : text;
 };
 
@@ -265,15 +266,13 @@ export const AgentMessage = ({ thought }: AgentMessageProps) => {
           <div>
             <p className="font-semibold text-sm text-foreground">{thought.agent}</p>
             {thought.timestamp && (
-              <p className="text-xs text-muted-foreground">
-                {new Date(thought.timestamp).toLocaleTimeString()}
-              </p>
+              <p className="text-xs text-muted-foreground">{new Date(thought.timestamp).toLocaleTimeString()}</p>
             )}
           </div>
           <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
             {renderMessageWithTooltips(thought.message)}
           </p>
-          
+
           {smilesStrings.length > 0 && (
             <div className="space-y-3 mt-4 pt-4 border-t border-border">
               {smilesStrings.map((smiles, index) => (
