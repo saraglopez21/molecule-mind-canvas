@@ -10,6 +10,7 @@ import { Loader2, HelpCircle } from "lucide-react";
 
 interface ControlPanelProps {
   onRunCrew: (params: ResearchParams) => void;
+  onDemoMode: () => void;
   isRunning: boolean;
 }
 
@@ -23,7 +24,7 @@ export interface ResearchParams {
 
 const EXAMPLE_SMILES = "CC(C)(C(=O)O)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccccc4";
 
-export const ControlPanel = ({ onRunCrew, isRunning }: ControlPanelProps) => {
+export const ControlPanel = ({ onRunCrew, onDemoMode, isRunning }: ControlPanelProps) => {
   const [smiles, setSmiles] = useState("");
   const [goal, setGoal] = useState("");
   const [similarity, setSimilarity] = useState([0.7]);
@@ -185,21 +186,34 @@ export const ControlPanel = ({ onRunCrew, isRunning }: ControlPanelProps) => {
           </div>
         </div>
 
-        <Button
-          type="submit"
-          disabled={isRunning || !smiles || !goal}
-          className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
-          size="lg"
-        >
-          {isRunning ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Research Crew Running...
-            </>
-          ) : (
-            "Run Research Crew"
-          )}
-        </Button>
+        <div className="space-y-3">
+          <Button
+            type="submit"
+            disabled={isRunning || !smiles || !goal}
+            className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
+            size="lg"
+          >
+            {isRunning ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Research Crew Running...
+              </>
+            ) : (
+              "Run Research Crew"
+            )}
+          </Button>
+          
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isRunning}
+            onClick={onDemoMode}
+            className="w-full"
+            size="lg"
+          >
+            Ver Modo Demo
+          </Button>
+        </div>
       </form>
     </Card>
   );

@@ -8,6 +8,95 @@ const Index = () => {
   const [messages, setMessages] = useState<StreamMessage[]>([]);
   const [isRunning, setIsRunning] = useState(false);
 
+  const handleDemoMode = async () => {
+    setIsRunning(true);
+    setMessages([]);
+    toast.success("Cargando mensajes de demostración...");
+
+    const demoMessages: StreamMessage[] = [
+      {
+        type: "agent_thought",
+        agent: "Designer",
+        message: "Iniciando análisis de la molécula base. Propiedades actuales: LogP: 4.8 (alto), TPSA: 90.5 (óptimo), QED: 0.72 (excelente drug-likeness). Para mejorar la bioavailability, propongo reducir la lipofilia añadiendo grupos polares. La permeability actual es adecuada según la regla de Lipinski.",
+        timestamp: Date.now(),
+      },
+      {
+        type: "agent_thought",
+        agent: "Validator",
+        message: "Validando propuesta inicial. Calculando descriptores moleculares: LogP: 3.9 (mejora significativa, ahora en rango óptimo), TPSA: 105.2 (aceptable para ADME), MW: 485.3, QED: 0.81 (excelente), SA Score: 2.8 (síntesis factible). Tanimoto: 0.87 mantiene similitud estructural. La affinity predicha con el receptor mejora un 15%.",
+        timestamp: Date.now() + 1500,
+      },
+      {
+        type: "agent_thought",
+        agent: "Synthesizer",
+        message: "Evaluando ruta sintética. SA Score: 2.8 indica que la síntesis es viable con 3-4 pasos. La adición del grupo hidroxilo mejora la solubility significativamente. Confirmado: ruta factible con química estándar. Estructura propuesta: `CC(O)(C(=O)O)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccccc4`",
+        timestamp: Date.now() + 3000,
+      },
+      {
+        type: "agent_thought",
+        agent: "Designer",
+        message: "Refinando el diseño. Nueva variante con mejor selectivity hacia el target. Propiedades predichas: LogP: 2.3 (óptimo para CNS penetration), TPSA: 45.8 (excelente), MW: 456.7, QED: 0.89 (drug-like excepcional). El perfil de toxicity predicho es bajo. SMILES: `CC(C)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccc(O)cc4`",
+        timestamp: Date.now() + 4500,
+      },
+      {
+        type: "agent_thought",
+        agent: "Validator",
+        message: "Análisis exhaustivo completado. Comparación con molécula original: LogP mejoró de 4.8 a 2.3 (52% reducción, ahora óptimo), TPSA: 45.8 (ideal para permeability), MW: 456.7 (dentro de rango), Tanimoto: 0.82 (similitud preservada). Violaciones de Lipinski: 0. SA Score: 3.1 (síntesis moderadamente fácil). Predicciones ADME favorables en todos los parámetros.",
+        timestamp: Date.now() + 6000,
+      },
+      {
+        type: "agent_thought",
+        agent: "Synthesizer",
+        message: "Ruta sintética optimizada identificada. SA Score: 3.1 es aceptable. Propongo síntesis en 4 pasos: 1) Reducción selectiva, 2) Alquilación, 3) Acoplamiento cross-coupling, 4) Desprotección. Rendimiento global estimado: 45-55%. La solubility mejorada facilitará la purificación y formulación farmacéutica.",
+        timestamp: Date.now() + 7500,
+      },
+      {
+        type: "final_report",
+        data: {
+          executive_summary: "El equipo de investigación optimizó exitosamente la molécula inicial para mejorar su perfil farmacológico.\n\nLogros clave:\n- LogP reducido de 4.8 a 2.3 (52% mejora, ahora en rango óptimo)\n- TPSA optimizada a 45.8 (excelente para permeabilidad)\n- QED mejorado de 0.72 a 0.89 (drug-likeness excepcional)\n- Tanimoto 0.82 mantiene el farmacóforo esencial\n- SA Score 3.1 indica síntesis factible\n- Cumple 100% regla de Lipinski\n- ADME y selectivity mejorados\n\nLa molécula final presenta perfil farmacológico superior con bioavailability y permeability optimizadas, manteniendo baja toxicity predicha.",
+          final_smiles: "CC(C)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccc(O)cc4",
+          verifiable_data: {
+            starting_molecule: {
+              smiles: "CC(C)(C(=O)O)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccccc4",
+              LogP: 4.8,
+              TPSA: 90.5,
+              MW: 501.7,
+              QED: 0.72,
+            },
+            final_molecule: {
+              smiles: "CC(C)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccc(O)cc4",
+              LogP: 2.3,
+              TPSA: 45.8,
+              MW: 456.7,
+              QED: 0.89,
+              "SA Score": 3.1,
+            },
+            improvements: {
+              LogP_reduction: -2.5,
+              LogP_percent_improvement: 52.1,
+              TPSA_optimization: -44.7,
+              QED_improvement: 0.17,
+            },
+            constraints_satisfied: {
+              Tanimoto: 0.82,
+              lipinski_violations: 0,
+              synthetic_accessibility: "Feasible (SA Score 3.1)",
+            },
+          },
+        },
+      },
+    ];
+
+    for (let i = 0; i < demoMessages.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setMessages(prev => [...prev, demoMessages[i]]);
+      if (i === demoMessages.length - 1) {
+        setIsRunning(false);
+        toast.success("Demo completada - Observa los tooltips y badges!");
+      }
+    }
+  };
+
   const handleRunCrew = async (params: ResearchParams) => {
     setIsRunning(true);
     setMessages([]);
@@ -137,7 +226,7 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-6">
         <div className="grid lg:grid-cols-2 gap-6 h-[calc(100vh-120px)]">
-          <ControlPanel onRunCrew={handleRunCrew} isRunning={isRunning} />
+          <ControlPanel onRunCrew={handleRunCrew} onDemoMode={handleDemoMode} isRunning={isRunning} />
           <LabMonitor messages={messages} isRunning={isRunning} />
         </div>
       </main>
