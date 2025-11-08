@@ -10,7 +10,6 @@ import { Loader2, HelpCircle } from "lucide-react";
 
 interface ControlPanelProps {
   onRunCrew: (params: ResearchParams) => void;
-  onDemoMode: () => void;
   isRunning: boolean;
 }
 
@@ -24,7 +23,7 @@ export interface ResearchParams {
 
 const EXAMPLE_SMILES = "CC(C)(C(=O)O)c1ccc(cc1)C(O)CCCN2CCC(CC2)C(O)(c3ccccc3)c4ccccc4";
 
-export const ControlPanel = ({ onRunCrew, onDemoMode, isRunning }: ControlPanelProps) => {
+export const ControlPanel = ({ onRunCrew, isRunning }: ControlPanelProps) => {
   const [smiles, setSmiles] = useState("");
   const [goal, setGoal] = useState("");
   const [similarity, setSimilarity] = useState([0.7]);
@@ -133,7 +132,7 @@ export const ControlPanel = ({ onRunCrew, onDemoMode, isRunning }: ControlPanelP
                     </Label>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>Controls how similar the optimized molecule should be to the original. A higher value (close to 1.0) maintains more structural similarity, while lower values allow greater structural innovation.</p>
+                    <p>Controla qué tan similar debe ser la molécula optimizada a la original. Un valor más alto (cercano a 1.0) mantiene la estructura más similar, mientras que valores más bajos permiten mayor innovación estructural.</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -186,34 +185,21 @@ export const ControlPanel = ({ onRunCrew, onDemoMode, isRunning }: ControlPanelP
           </div>
         </div>
 
-        <div className="space-y-3">
-          <Button
-            type="submit"
-            disabled={isRunning || !smiles || !goal}
-            className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
-            size="lg"
-          >
-            {isRunning ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Research Crew Running...
-              </>
-            ) : (
-              "Run Research Crew"
-            )}
-          </Button>
-          
-          <Button
-            type="button"
-            variant="outline"
-            disabled={isRunning}
-            onClick={onDemoMode}
-            className="w-full"
-            size="lg"
-          >
-            View Demo Mode
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          disabled={isRunning || !smiles || !goal}
+          className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
+          size="lg"
+        >
+          {isRunning ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Research Crew Running...
+            </>
+          ) : (
+            "Run Research Crew"
+          )}
+        </Button>
       </form>
     </Card>
   );
