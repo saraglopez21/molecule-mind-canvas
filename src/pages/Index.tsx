@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ControlPanel, ResearchParams } from "@/components/ControlPanel";
 import { LabMonitor, StreamMessage } from "@/components/LabMonitor";
 import { PropertyEvolutionChart, PropertySnapshot } from "@/components/PropertyEvolutionChart";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "sonner";
 import { Beaker } from "lucide-react";
 
@@ -228,16 +229,19 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-subtle">
       <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-soft sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-primary p-2 rounded-lg">
-              <Beaker className="h-6 w-6 text-primary-foreground" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="bg-gradient-primary p-2 rounded-lg">
+                <Beaker className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                  Agentic Medicinal Chemist
+                </h1>
+                <p className="text-sm text-muted-foreground">AI-Powered Molecular Design & Optimization</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Agentic Medicinal Chemist
-              </h1>
-              <p className="text-sm text-muted-foreground">AI-Powered Molecular Design & Optimization</p>
-            </div>
+            <ThemeToggle />
           </div>
         </div>
       </header>
